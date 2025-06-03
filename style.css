@@ -4,6 +4,9 @@ html, body {
   padding: 0;
   width: 100vw;
 }
+html {
+  background: #2f4c7e;
+}
 body {
   display: flex;
   justify-content: center;
@@ -11,7 +14,7 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: #2f4c7e;
+  background: transparent;
   font-family: sans-serif;
   color: white;
   user-select: none;
@@ -22,6 +25,7 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: 0;
+  background-color: #2f4c7e; /* fallback background */
 }
 button, .minimal-nav-btn, .btn, #toggleRandomWavesBtn {
   background: rgba(0,170,255,0.18) !important;
@@ -224,6 +228,7 @@ main.container * {
 
 /* Only wrap the main content, not the entire main.container */
 main.container {
+  background-color: #2f4c7e;
   background: none;
   padding: 0;
   border-radius: 0;
@@ -241,4 +246,16 @@ main.container {
   position: relative;
   transition: height 0.4s cubic-bezier(.4,1.6,.6,1), min-height 0.4s cubic-bezier(.4,1.6,.6,1), max-height 0.4s cubic-bezier(.4,1.6,.6,1), box-shadow 0.2s, background 0.2s;
   overflow: hidden;
+}
+
+/* Override text colors to white */
+body {
+  color: #fff !important;
+}
+.text-info {
+  color: #fff !important;
+}
+#projectsSwiper .card-title,
+#projectsSwiper .card-text {
+  color: #fff !important;
 }
