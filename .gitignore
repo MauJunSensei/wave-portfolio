@@ -1,0 +1,36 @@
+# Node modules and dependencies
+node_modules/
+
+# Build outputs
+*.log
+dist/
+*.tmp
+*.temp
+
+# Compiled JavaScript
+*.js
+!wave.js  # Keep main compiled output if needed for deployment
+
+# TypeScript cache
+*.tsbuildinfo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
+
+# OS junk
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*
+
+# Ignore coverage and test output
+coverage/
+
+# Ignore by default, but keep main deployable JS
+# Remove !wave.js if you want to ignore all JS
