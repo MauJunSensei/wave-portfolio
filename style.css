@@ -1,0 +1,222 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #111;
+  font-family: sans-serif;
+  color: white;
+  user-select: none;
+}
+#rippleCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+button, .minimal-nav-btn, .btn, #toggleRandomWavesBtn {
+  background: rgba(0,170,255,0.18) !important;
+  color: #fff !important;
+  box-shadow: 0 0 10px #0af2;
+  border: none;
+  border-radius: 6px;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.15s cubic-bezier(.4,2,.6,1);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 8px 16px;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+button:hover, .minimal-nav-btn:hover, .btn:hover, #toggleRandomWavesBtn:hover, #toggleRandomWavesBtn:focus {
+  background: rgba(0,136,204,0.28) !important;
+  box-shadow: 0 0 15px #08c5;
+  color: #fff !important;
+}
+button:active, .minimal-nav-btn:active, .btn:active, #toggleRandomWavesBtn:active {
+  background: rgba(0,170,255,0.28) !important;
+  transform: scale(0.94);
+  box-shadow: 0 0 4px #0af, 0 2px 16px #0af44a;
+}
+.minimal-nav-btn {
+  /* For nav buttons, animate on click */
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s cubic-bezier(.4,2,.6,1);
+}
+.minimal-nav-btn:active {
+  transform: scale(0.93) rotate(-1deg);
+  background: rgba(0,170,255,0.28) !important;
+  color: #fff !important;
+  box-shadow: 0 0 8px #0af, 0 2px 24px #0af44a;
+}
+#portfolioContent {
+  min-height: 320px; /* Further increased to fit carousel and all content without jump */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  transition: min-height 0.2s;
+}
+#portfolioContent h2 {
+  min-height: 2.5em; /* Reserve space for section titles */
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+#portfolioContent .carousel-inner {
+  min-height: 220px; /* Increased to match tallest card + controls */
+  display: flex;
+  align-items: stretch;
+}
+#portfolioContent .carousel-item {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+#portfolioContent .card {
+  min-width: 280px;
+  max-width: 340px;
+  min-height: 180px;
+  max-height: 220px;
+  width: 100%;
+  margin: 0 auto;
+  background: #181c22cc; /* semi-transparent dark */
+  box-shadow: 0 2px 16px #0af2;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#toggleRandomWavesBtn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  padding: 10px 22px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #0af8 0%, #181c22cc 100%) !important;
+  color: #fff !important;
+  border: 1.5px solid #0af6;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px #0af3, 0 1.5px 8px #0008;
+  letter-spacing: 0.01em;
+  transition: background 0.25s, border 0.2s, color 0.2s, box-shadow 0.2s, transform 0.13s cubic-bezier(.4,2,.6,1);
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+#toggleRandomWavesBtn:hover, #toggleRandomWavesBtn:focus {
+  background: linear-gradient(90deg, #0afc 0%, #181c22ee 100%) !important;
+  border: 1.5px solid #0af;
+  color: #fff !important;
+  box-shadow: 0 4px 32px #0af6, 0 2px 12px #000a;
+}
+#toggleRandomWavesBtn:active {
+  background: linear-gradient(90deg, #0af 0%, #181c22 100%) !important;
+  transform: scale(0.96);
+  box-shadow: 0 0 8px #0af2;
+}
+#toggleRandomWavesBtn.btn-off {
+  background: rgba(68,68,68,0.18) !important;
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 0 8px #0006;
+}
+#toggleRandomWavesBtn.btn-off:hover, #toggleRandomWavesBtn.btn-off:focus {
+  background: rgba(102,102,102,0.28) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px #000a;
+}
+#toggleRandomWavesBtn.btn-off:active {
+  background: rgba(34,34,34,0.28) !important;
+  box-shadow: 0 0 4px #0004;
+}
+/* Make carousel project cards show pointer cursor */
+.project-card {
+  cursor: pointer;
+}
+
+/* Hover effect for project cards */
+.project-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.project-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+
+}
+
+/* Swiper carousel card styling */
+#projectsSwiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: auto;
+}
+#projectsSwiper .card.project-card {
+  min-width: 260px;
+  max-width: 340px;
+  min-height: 180px;
+  max-height: 240px;
+  width: 100%;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #181c22cc 70%, #0af2 100%);
+  box-shadow: 0 4px 32px #0af3, 0 2px 16px #0008;
+  border-radius: 16px;
+  border: 1.5px solid #0af4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  transition: transform 0.22s cubic-bezier(.4,2,.6,1), box-shadow 0.22s, border 0.18s;
+  cursor: pointer;
+  overflow: hidden;
+}
+#projectsSwiper .card.project-card:hover {
+  transform: scale(1.035) translateY(-2px);
+  box-shadow: 0 8px 36px #0af6, 0 4px 24px #000a;
+  border-color: #0af;
+}
+#projectsSwiper .card-title {
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0af;
+  margin-bottom: 0.5em;
+}
+#projectsSwiper .card-text {
+  color: #e0e6ef;
+  font-size: 0.98rem;
+}
+#projectsSwiper .btn.minimal-nav-btn {
+  background: rgba(0,170,255,0.13) !important;
+  color: #fff !important;
+  border-radius: 6px;
+  font-size: 0.97rem;
+  padding: 6px 14px;
+  margin-top: 0.5em;
+  box-shadow: 0 1.5px 8px #0af2;
+  transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+}
+#projectsSwiper .btn.minimal-nav-btn:hover {
+  background: rgba(0,170,255,0.22) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px #0af4;
+}
+#projectsSwiper .fab.fa-github {
+  color: #fff;
+  font-size: 1.1em;
+  margin-right: 0.3em;
+}
