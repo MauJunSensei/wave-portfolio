@@ -316,3 +316,20 @@ body {
   width: 100%;
   box-sizing: border-box;
 }
+
+/* Responsive layout: nav buttons wrap into two rows on small screens */
+@media (max-width: 768px) {
+  .main-content-box nav {
+    flex-wrap: wrap !important;
+    justify-content: center;
+  }
+  .main-content-box nav > button {
+    flex: 1 1 45% !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+@media (max-width: 400px) {
+  .main-content-box nav > button {
+    flex: 1 1 100% !important;
+  }
+}
