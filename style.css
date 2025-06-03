@@ -239,13 +239,11 @@ main.container {
   background-color: rgba(0, 0, 0, 0.6);
   padding: 2rem;
   border-radius: 16px;
-  max-width: 480px;
+  width: fit-content;
+  max-width: calc(100vw - 2rem);
   margin: 4vh auto;
   box-shadow: 0 6px 32px #000a;
-  width: 100%;
   position: relative;
-  transition: height 0.4s cubic-bezier(.4,1.6,.6,1), min-height 0.4s cubic-bezier(.4,1.6,.6,1), max-height 0.4s cubic-bezier(.4,1.6,.6,1), box-shadow 0.2s, background 0.2s;
-  overflow: hidden;
 }
 
 /* Override text colors to white */
@@ -258,4 +256,63 @@ body {
 #projectsSwiper .card-title,
 #projectsSwiper .card-text {
   color: #fff !important;
+}
+
+/* Settings panel styling */
+#settingsPanel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  z-index: 20;
+  display: none;
+}
+#settingsPanel h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+#settingsPanel label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+#settingsPanel input[type=range],
+#settingsPanel input[type=number] {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Settings Panel */
+.settings-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0.5rem;
+  background: #181c22cc;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  display: none;
+  z-index: 5;
+  width: fit-content;
+  max-width: calc(100vw - 2rem);
+}
+.settings-panel div {
+  margin-bottom: 1rem;
+}
+.settings-panel label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.settings-panel input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }

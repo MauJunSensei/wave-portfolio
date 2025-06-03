@@ -89,6 +89,63 @@ const CONFIG: Config = {
     SWIPER_AUTOPLAY_DELAY: 2000,
 };
 
+// --- Show canvas interactivity hint in main-content-box until user interacts ---
+document.addEventListener('DOMContentLoaded', () => {
+  const mainBox = document.querySelector('.main-content-box');
+  const canvas = document.getElementById('rippleCanvas');
+  if (mainBox && canvas && !document.getElementById('canvasHint')) {
+    const hint = document.createElement('div');
+    hint.id = 'canvasHint';
+    hint.className = 'canvas-hint animate__animated animate__fadeInDown';
+    hint.innerHTML = `
+      <span class="hint-icon" aria-hidden="true"><i class="fa-solid fa-hand-pointer"></i></span>
+      <span class="hint-text">Tap or click to make waves!</span>
+    `;
+    hint.style.opacity = '1';
+    hint.style.pointerEvents = 'none';
+    hint.style.transition = 'opacity 0.8s';
+    hint.style.textAlign = 'center';
+    hint.style.margin = '1.5rem auto 0 auto';
+    mainBox.insertBefore(hint, mainBox.firstChild);
+
+    // Animate mainBox height when hint is removed
+    const animateHintRemoval = () => {
+      const mainBoxEl = mainBox as HTMLElement;
+      const startHeight = mainBoxEl.offsetHeight;
+      // Add fadeOutUp animation
+      hint.classList.remove('animate__fadeInDown');
+      hint.classList.add('animate__fadeOutUp');
+      hint.style.opacity = '0';
+      setTimeout(() => {
+        hint.remove();
+        // After DOM update, animate height
+        requestAnimationFrame(() => {
+          const endHeight = mainBoxEl.offsetHeight;
+          mainBoxEl.style.height = startHeight + 'px';
+          void mainBoxEl.offsetWidth;
+          mainBoxEl.style.transition = 'height 0.4s cubic-bezier(.4,1.6,.6,1)';
+          mainBoxEl.style.height = endHeight + 'px';
+          const clear = () => {
+            mainBoxEl.style.transition = '';
+            mainBoxEl.style.height = '';
+            mainBoxEl.removeEventListener('transitionend', clear);
+          };
+          mainBoxEl.addEventListener('transitionend', clear);
+        });
+      }, 800); // match fadeOutUp duration
+    };
+
+    // Remove hint on first user interaction with the canvas (mousedown or touchstart only)
+    const removeHint = () => {
+      canvas.removeEventListener('mousedown', removeHint);
+      canvas.removeEventListener('touchstart', removeHint);
+      animateHintRemoval();
+    };
+    canvas.addEventListener('mousedown', removeHint);
+    canvas.addEventListener('touchstart', removeHint);
+  }
+});
+
 // --- Portfolio UI ---
 const aboutHTML = `
   <div class='animate__animated animate__fadeIn'>
@@ -156,6 +213,35 @@ const contactHTML = `
       <a href='mailto:jun@dodel.xyz' class='btn minimal-nav-btn' title='Email'><i class='fa-solid fa-envelope'></i></a>
       <a href='https://github.com/MauJunSensei' target='_blank' class='btn minimal-nav-btn' title='GitHub'><i class='fab fa-github'></i></a>
       <a href='https://www.linkedin.com/in/jun-d-336494329/' target='_blank' class='btn minimal-nav-btn' title='LinkedIn'><i class='fab fa-linkedin'></i></a>
+    </div>
+  </div>`;
+
+// Settings page content integrated into main content
+const settingsHTML = `
+  <div class='animate__animated animate__fadeIn'>
+    <h2 class='h5 mb-3'><i class='fa fa-cog me-2'></i>Settings</h2>
+    <div>
+      <label><input type='checkbox' id='randomWavesCheckbox'> Enable Random Waves</label>
+    </div>
+    <div>
+      <label for='dampingRange'>Damping: <span id='dampingValue'>${CONFIG.DAMPING.toFixed(3)}</span></label>
+      <input type='range' id='dampingRange' min='0.8' max='0.999' step='0.001' value='${CONFIG.DAMPING}'>
+    </div>
+    <div>
+      <label for='disturbanceRange'>Disturbance: <span id='disturbanceValue'>${CONFIG.DISTURBANCE.toFixed(1)}</span></label>
+      <input type='range' id='disturbanceRange' min='1' max='20' step='0.1' value='${CONFIG.DISTURBANCE}'>
+    </div>
+    <div>
+      <label for='radiusNumber'>Disturbance Radius:</label>
+      <input type='number' id='radiusNumber' min='1' max='10' step='1' value='${CONFIG.DISTURBANCE_RADIUS}'>
+    </div>
+    <div>
+      <label for='intervalMinNumber'>Random Interval Min (ms):</label>
+      <input type='number' id='intervalMinNumber' min='100' max='5000' step='100' value='${CONFIG.RANDOM_WAVE_INTERVAL_MIN}'>
+    </div>
+    <div>
+      <label for='intervalMaxNumber'>Random Interval Max (ms):</label>
+      <input type='number' id='intervalMaxNumber' min='100' max='10000' step='100' value='${CONFIG.RANDOM_WAVE_INTERVAL_MAX}'>
     </div>
   </div>`;
 
@@ -249,8 +335,8 @@ class WaveField {
     private gridH: number = 0;
     private width: number = 0;
     private height: number = 0;
-    private readonly damping: number;
-    private readonly disturbance: number;
+    public damping: number;
+    public disturbance: number;
     private density: number;
 
     constructor(density: number, disturbance: number, damping: number) {
@@ -566,11 +652,12 @@ void main() {
 // === Simulation Orchestrator ===
 class Simulation {
     private glCtx: GLContext;
-    private field: WaveField;
+    public field: WaveField;
     private shader: ShaderProgram;
     private renderer: Renderer;
     private inputHandler: InputHandler;
     public randomWavesEnabled: boolean = true;
+    private randomWaveTimer: number = 0;
 
     constructor(canvasId: string) {
         this.glCtx = new GLContext(canvasId);
@@ -579,18 +666,38 @@ class Simulation {
         this.shader = new ShaderProgram(this.glCtx.gl, vertSrc, fragSrc);
         this.renderer = new Renderer(this.glCtx, this.shader, this.field);
         (window as any)._waveSimInstance = this;
-        this.spawnInitialRandomWaves(CONFIG.INITIAL_RANDOM_WAVES); // Use config
+        this.spawnInitialRandomWaves(CONFIG.INITIAL_RANDOM_WAVES);
         this.scheduleRandomWave();
     }
 
-    private spawnInitialRandomWaves(count: number): void {
+    private spawnRandomWaveAtRandomLocation(intensity?: number): void {
         const W = this.field.getGridWidth();
         const H = this.field.getGridHeight();
+        const gx = Math.floor(Math.random() * W);
+        const gy = Math.floor(Math.random() * H);
+        const imp = intensity !== undefined ? intensity : CONFIG.DISTURBANCE * (0.5 + Math.random() * 1.5);
+        this.field.addImpulseAtGrid(gx, gy, imp);
+    }
+
+    private spawnInitialRandomWaves(count: number): void {
         for (let i = 0; i < count; i++) {
-            const gx = Math.floor(Math.random() * W);
-            const gy = Math.floor(Math.random() * H);
-            const intensity = CONFIG.DISTURBANCE * (0.5 + Math.random() * 1.5);
-            this.field.addImpulseAtGrid(gx, gy, intensity);
+            this.spawnRandomWaveAtRandomLocation();
+        }
+    }
+
+    private scheduleRandomWave(): void {
+        if (!this.randomWavesEnabled) return;
+        const interval = CONFIG.RANDOM_WAVE_INTERVAL_MIN + Math.random() * (CONFIG.RANDOM_WAVE_INTERVAL_MAX - CONFIG.RANDOM_WAVE_INTERVAL_MIN);
+        this.randomWaveTimer = window.setTimeout(() => {
+            this.spawnRandomWaveAtRandomLocation();
+            this.scheduleRandomWave();
+        }, interval);
+    }
+
+    private clearRandomWaveTimer(): void {
+        if (this.randomWaveTimer) {
+            clearTimeout(this.randomWaveTimer);
+            this.randomWaveTimer = 0;
         }
     }
 
@@ -603,31 +710,8 @@ class Simulation {
         if (this.randomWavesEnabled) {
             this.scheduleRandomWave();
         } else {
-            if (this.randomWaveTimer) {
-                clearTimeout(this.randomWaveTimer);
-                this.randomWaveTimer = 0;
-            }
+            this.clearRandomWaveTimer();
         }
-    }
-
-    private randomWaveTimer: number = 0;
-    private scheduleRandomWave(): void {
-        if (!this.randomWavesEnabled) return;
-        // Use config for random interval
-        const interval = CONFIG.RANDOM_WAVE_INTERVAL_MIN + Math.random() * (CONFIG.RANDOM_WAVE_INTERVAL_MAX - CONFIG.RANDOM_WAVE_INTERVAL_MIN);
-        this.randomWaveTimer = window.setTimeout(() => {
-            this.spawnRandomWave();
-            this.scheduleRandomWave();
-        }, interval);
-    }
-
-    private spawnRandomWave(): void {
-        const W = this.field.getGridWidth();
-        const H = this.field.getGridHeight();
-        const gx = Math.floor(Math.random() * W);
-        const gy = Math.floor(Math.random() * H);
-        const intensity = CONFIG.DISTURBANCE * (0.5 + Math.random() * 1.5);
-        this.field.addImpulseAtGrid(gx, gy, intensity);
     }
 }
 
@@ -685,9 +769,23 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // --- Content switching logic ---
-  const setContent = (html: string): void => {
+  let currentContentKey: string | null = null;
+  const setContent = (html: string, key?: string): void => {
     const cont = document.getElementById('portfolioContent');
     const box = cont?.closest('.main-content-box') as HTMLElement;
+    // If the same button is pressed again, hide content
+    if (key && currentContentKey === key) {
+      if (box) {
+        animateHeight(box, () => {
+          cont!.innerHTML = '';
+        });
+      } else {
+        cont!.innerHTML = '';
+      }
+      currentContentKey = null;
+      return;
+    }
+    currentContentKey = key || null;
     if (!cont) return;
     if (box) {
       animateHeight(box, () => {
@@ -697,6 +795,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       cont.classList.remove('animate__fadeIn');
       cont.innerHTML = html;
+    }
+    // Call settings initializer if showing settings
+    if (html === settingsHTML) {
+      setTimeout(initSettings, 0);
     }
     // Initialize Swiper carousel if present
     setTimeout(() => {
@@ -749,52 +851,85 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // --- Navigation event listeners ---
-  document.getElementById('aboutBtn')?.addEventListener('click', () => setContent(aboutHTML));
-  document.getElementById('projectsBtn')?.addEventListener('click', () => setContent(projectsHTML));
-  document.getElementById('contactBtn')?.addEventListener('click', () => setContent(contactHTML));
+  document.getElementById('aboutBtn')?.addEventListener('click', () => setContent(aboutHTML, 'about'));
+  document.getElementById('projectsBtn')?.addEventListener('click', () => setContent(projectsHTML, 'projects'));
+  document.getElementById('contactBtn')?.addEventListener('click', () => setContent(contactHTML, 'contact'));
+  document.getElementById('settingsBtn')?.addEventListener('click', () => setContent(settingsHTML, 'settings'));
 
-  // --- Add Disable Random Waves toggle button ---
-  const addDisableRandomWavesToggle = () => {
-    let btn = document.getElementById('disableRandomWavesBtn') as HTMLButtonElement;
-    if (!btn) {
-      btn = document.createElement('button');
-      btn.id = 'disableRandomWavesBtn';
-      btn.className = 'btn minimal-nav-btn';
-      btn.style.position = 'fixed';
-      btn.style.bottom = '24px';
-      btn.style.right = '24px';
-      btn.style.zIndex = '12';
-      btn.innerHTML = '<i class="fa fa-ban me-1"></i>Disable Random Waves';
-      document.body.appendChild(btn);
-    }
-    const updateBtn = () => {
-      if (sim && sim.randomWavesEnabled) {
-        btn.innerHTML = '<i class="fa fa-ban me-1"></i>Disable Random Waves';
-        btn.classList.remove('btn-off');
-      } else {
-        btn.innerHTML = '<i class="fa fa-water me-1"></i>Enable Random Waves';
-        btn.classList.add('btn-off');
-      }
-    };
-    btn.onclick = () => {
-      sim.toggleRandomWaves();
-      updateBtn();
-    };
-    updateBtn();
-  };
-  addDisableRandomWavesToggle();
-
-  // --- Initial load ---
-  setContent(aboutHTML);
-
-  // --- Remove pointer-events: none from container to restore interactivity ---
-  // (If you want to allow canvas clicks through the overlay, use a separate absolutely positioned div for pointer-events: none, not the main container.)
-  // If you previously set pointer-events: none on the container, undo it:
-  const container = document.querySelector('.container');
-  if (container) {
-    (container as HTMLElement).style.pointerEvents = '';
-    container.querySelectorAll('button, a, nav, .minimal-nav-btn').forEach(el => {
-      (el as HTMLElement).style.pointerEvents = '';
-    });
+  // --- Animate settings button on load
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (settingsBtn) {
+    settingsBtn.classList.add('animate__animated', 'animate__fadeInUp');
+    settingsBtn.addEventListener('animationend', () => {
+      settingsBtn.classList.remove('animate__animated', 'animate__fadeInUp');
+    }, { once: true });
   }
+
+  // Settings initializer: set initial values and attach event listeners dynamically
+  const initSettings = (): void => {
+    const sim = (window as any)._waveSimInstance as Simulation;
+    const dampingRange = document.getElementById('dampingRange') as HTMLInputElement;
+    const disturbanceRange = document.getElementById('disturbanceRange') as HTMLInputElement;
+    const radiusNumber = document.getElementById('radiusNumber') as HTMLInputElement;
+    const intervalMinNumber = document.getElementById('intervalMinNumber') as HTMLInputElement;
+    const intervalMaxNumber = document.getElementById('intervalMaxNumber') as HTMLInputElement;
+    const randomCheckbox = document.getElementById('randomWavesCheckbox') as HTMLInputElement;
+    if (dampingRange) {
+      dampingRange.value = sim.field.damping.toString();
+      document.getElementById('dampingValue')!.innerText = sim.field.damping.toFixed(3);
+      dampingRange.addEventListener('input', e => updateDamping(parseFloat((e.target as HTMLInputElement).value)));
+    }
+    if (disturbanceRange) {
+      disturbanceRange.value = sim.field.disturbance.toString();
+      document.getElementById('disturbanceValue')!.innerText = sim.field.disturbance.toFixed(1);
+      disturbanceRange.addEventListener('input', e => updateDisturbance(parseFloat((e.target as HTMLInputElement).value)));
+    }
+    if (radiusNumber) {
+      radiusNumber.value = CONFIG.DISTURBANCE_RADIUS.toString();
+      radiusNumber.addEventListener('input', e => updateRadius(parseInt((e.target as HTMLInputElement).value, 10)));
+    }
+    if (intervalMinNumber) {
+      intervalMinNumber.value = CONFIG.RANDOM_WAVE_INTERVAL_MIN.toString();
+      intervalMinNumber.addEventListener('input', e => updateRandomIntervalMin(parseInt((e.target as HTMLInputElement).value, 10)));
+    }
+    if (intervalMaxNumber) {
+      intervalMaxNumber.value = CONFIG.RANDOM_WAVE_INTERVAL_MAX.toString();
+      intervalMaxNumber.addEventListener('input', e => updateRandomIntervalMax(parseInt((e.target as HTMLInputElement).value, 10)));
+    }
+    if (randomCheckbox) {
+      randomCheckbox.checked = sim.randomWavesEnabled;
+      randomCheckbox.addEventListener('change', () => {
+        sim.randomWavesEnabled = randomCheckbox.checked;
+        if (sim.randomWavesEnabled) {
+          (sim as any).scheduleRandomWave();
+        } else {
+          if ((sim as any).randomWaveTimer) {
+            clearTimeout((sim as any).randomWaveTimer);
+            (sim as any).randomWaveTimer = 0;
+          }
+        }
+      });
+    }
+  };
+
+  // --- Settings panel value handlers ---
+  const updateDamping = (value: number) => {
+    sim.field.damping = value;
+    const valElem = document.getElementById('dampingValue');
+    if (valElem) valElem.innerText = value.toFixed(3);
+  };
+  const updateDisturbance = (value: number) => {
+    sim.field.disturbance = value;
+    const valElem = document.getElementById('disturbanceValue');
+    if (valElem) valElem.innerText = value.toFixed(1);
+  };
+  const updateRadius = (value: number) => {
+    CONFIG.DISTURBANCE_RADIUS = value;
+  };
+  const updateRandomIntervalMin = (value: number) => {
+    CONFIG.RANDOM_WAVE_INTERVAL_MIN = value;
+  };
+  const updateRandomIntervalMax = (value: number) => {
+    CONFIG.RANDOM_WAVE_INTERVAL_MAX = value;
+  };
 });
