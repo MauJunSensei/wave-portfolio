@@ -8,7 +8,67 @@ var CONFIG = {
     RANDOM_WAVE_INTERVAL_MIN: 300, // ms
     RANDOM_WAVE_INTERVAL_MAX: 2000, // ms
     DISTURBANCE_RADIUS: 3,
+    CARD_MIN_WIDTH: 260,
+    CARD_MAX_WIDTH: 340,
+    CARD_MIN_HEIGHT: 180,
+    CARD_MAX_HEIGHT: 240,
+    CARD_BORDER_RADIUS: 18,
+    CARD_BODY_PADDING: '1.6rem 1.3rem 1.5rem 1.3rem',
+    CARD_MARGIN_Y: '0.5rem',
+    CARD_TITLE_FONT_SIZE: '1.18rem',
+    CARD_TITLE_MARGIN_BOTTOM: '0.5em',
+    CARD_TEXT_FONT_SIZE: '1.01rem',
+    CARD_TEXT_MARGIN_BOTTOM: '0.5em',
+    PROJECT_DETAILS_ACTIONS_MARGIN_TOP: '2.2rem',
+    // Shader and animation config
+    SHADER_ASPECT: 800 / 600,
+    SHADER_FOV: 1.2,
+    SHADER_Z_NEAR: 0.5,
+    SHADER_Z_FAR: 2.5,
+    SHADER_UV_SCALE: 0.01,
+    SHADER_CAUSTIC_FREQ1: 8.0,
+    SHADER_CAUSTIC_FREQ2: 8.0,
+    SHADER_CAUSTIC_FREQ3: 6.0,
+    SHADER_CAUSTIC_FREQ4: 6.0,
+    SHADER_CAUSTIC_AMP: 0.25,
+    SHADER_CAUSTIC_TIME1: 0.7,
+    SHADER_CAUSTIC_TIME2: -0.8,
+    SHADER_CAUSTIC_TIME3: 1.2,
+    SHADER_CAUSTIC_TIME4: -1.5,
+    SHADER_BLUR_EXP: 16.0,
+    SHADER_BLUR_ALPHA: 0.9,
+    SHADER_COLOR_MIX: 1.2,
+    SWIPER_SPEED: 500,
+    SWIPER_SPACE_BETWEEN: 24,
+    SWIPER_AUTOPLAY_DELAY: 2000,
 };
+// --- Portfolio UI ---
+var aboutHTML = "\n  <div class='animate__animated animate__fadeIn'>\n    <h2 class='h5 mb-3'><i class='fa-solid fa-user me-2'></i>About Me</h2>\n    <p class='mb-2'>Hi, I'm <b>Jun</b> \u2013 a computer science student passionate about graphics, simulations, machine learning, and general high performance compute.</p>\n    <ul class='list-unstyled small mb-0'>\n      <li><b>Location:</b> Amsterdam, Netherlands</li>\n      <li><b>Specialties:</b> Python, Rust, C++, x86_64, PyTorch, Scikit</li>\n    </ul>\n  </div>";
+var projectDetails = [
+    {
+        title: 'WebGL Water Simulation',
+        tech: 'TypeScript, WebGL',
+        description: 'Real-time interactive water simulation with caustics, foam, and raytraced lighting.',
+        github: 'https://github.com/MauJunSensei/wave-portfolio/',
+        details: "<h2 class='h5 mb-3'><i class='fa-solid fa-water me-2'></i>WebGL Water Simulation</h2><p>This project demonstrates a physically-based, interactive water simulation using WebGL and TypeScript. Features include caustics, foam, and raytraced lighting for realistic effects. <br><br><b>Technologies:</b> TypeScript, WebGL<br><b>Highlights:</b> Real-time performance, advanced shaders, physics simulation</p>"
+    },
+    {
+        title: 'Project 2: TBF',
+        tech: '[Tech Stack]',
+        description: 'Short description of project 2.',
+        github: 'https://github.com/yourusername/project2',
+        details: "<h2 class='h5 mb-3'><i class='fa-solid fa-cube me-2'></i>Project 2</h2><p>Detailed description of project 2. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>"
+    },
+    {
+        title: 'Project 3: TBF',
+        tech: '[Tech Stack]',
+        description: 'Short description of project 3.',
+        github: 'https://github.com/yourusername/project3',
+        details: "<h2 class='h5 mb-3'><i class='fa-solid fa-rocket me-2'></i>Project 3</h2><p>Detailed description of project 3. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>"
+    }
+];
+var projectsHTML = "\n  <div class='animate__animated animate__fadeIn'>\n    <h2 class='h5 mb-3'><i class='fa-solid fa-code me-2'></i>Projects</h2>\n    <div class=\"swiper\" id=\"projectsSwiper\">\n      <div class=\"swiper-wrapper\">\n        ".concat(projectDetails.map(function (proj, i) { return "\n          <div class=\"swiper-slide\">\n            <div class=\"card bg-dark text-white border-0 project-card\" data-project-index=\"".concat(i, "\" style=\"\n              min-width: ").concat(CONFIG.CARD_MIN_WIDTH, "px; max-width: ").concat(CONFIG.CARD_MAX_WIDTH, "px;\n              min-height: ").concat(CONFIG.CARD_MIN_HEIGHT, "px; max-height: ").concat(CONFIG.CARD_MAX_HEIGHT, "px;\n              border-radius: ").concat(CONFIG.CARD_BORDER_RADIUS, "px;\n              margin-top: ").concat(CONFIG.CARD_MARGIN_Y, "; margin-bottom: ").concat(CONFIG.CARD_MARGIN_Y, ";\n            \">\n              <div class=\"card-body d-flex flex-column h-100\" style=\"padding: ").concat(CONFIG.CARD_BODY_PADDING, ";\">\n                <h5 class=\"card-title mb-1\" style=\"font-size: ").concat(CONFIG.CARD_TITLE_FONT_SIZE, "; margin-bottom: ").concat(CONFIG.CARD_TITLE_MARGIN_BOTTOM, ";\">").concat(proj.title, "</h5>\n                <p class=\"card-text small mb-1\" style=\"font-size: ").concat(CONFIG.CARD_TEXT_FONT_SIZE, "; margin-bottom: ").concat(CONFIG.CARD_TEXT_MARGIN_BOTTOM, ";\">").concat(proj.tech, "</p>\n                <p class=\"card-text small mb-2\" style=\"font-size: ").concat(CONFIG.CARD_TEXT_FONT_SIZE, "; margin-bottom: ").concat(CONFIG.CARD_TEXT_MARGIN_BOTTOM, ";\">").concat(proj.description, "</p>\n                <a href=\"").concat(proj.github, "\" class=\"btn btn-sm minimal-nav-btn mt-auto align-self-start\" target=\"_blank\" rel=\"noopener\" title=\"View on GitHub\"><i class=\"fab fa-github me-1\"></i>GitHub</a>\n              </div>\n            </div>\n          </div>\n        "); }).join(''), "\n      </div>\n      <div class=\"swiper-pagination\"></div>\n    </div>\n  </div>");
+var contactHTML = "\n  <div class='animate__animated animate__fadeIn'>\n    <h2 class='h5 mb-3'><i class='fa-solid fa-envelope me-2'></i>Contact</h2>\n    <div class='d-flex gap-3'>\n      <a href='mailto:jun@dodel.xyz' class='btn minimal-nav-btn' title='Email'><i class='fa-solid fa-envelope'></i></a>\n      <a href='https://github.com/MauJunSensei' target='_blank' class='btn minimal-nav-btn' title='GitHub'><i class='fab fa-github'></i></a>\n      <a href='https://www.linkedin.com/in/jun-d-336494329/' target='_blank' class='btn minimal-nav-btn' title='LinkedIn'><i class='fab fa-linkedin'></i></a>\n    </div>\n  </div>";
 // === GL Context Manager ===
 var GLContext = /** @class */ (function () {
     function GLContext(canvasId) {
@@ -314,7 +374,7 @@ var Renderer = /** @class */ (function () {
 }());
 // === Shader Sources ===
 var vertSrc = "\nattribute vec2 aPos;\nattribute float aAmp;\nvarying float vAmp;\nuniform float uAspect;\nuniform float uPointSize;\nvoid main() {\n    vAmp = aAmp;\n    vec2 pos = aPos;\n    pos.x *= uAspect;\n    gl_PointSize = uPointSize;\n    gl_Position = vec4(pos, 0.0, 1.0);\n}";
-var fragSrc = "\nprecision mediump float;\nvarying float vAmp;\nuniform float uTime;\n\n// Light source position in NDC (centered, above pool)\nconst vec3 lightPos = vec3(0.0, 0.0, 1.5); // x, y in NDC, z above pool\n\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nvoid main() {\n    float amp = clamp(vAmp, -1.0, 1.0);\n    // Depth-based color: troughs are deeper/greener, crests are lighter/bluer\n    float baseHue = mix(0.5, 0.6, 0.5 + 0.5 * amp); // 0.5=greenish, 0.6=blueish\n    float baseSat = mix(0.8, 1.0, 0.5 + 0.5 * amp); // more saturated at crests\n    float baseVal = 0.4 + 0.6 * abs(amp); // brightness based on amplitude\n    vec3 color = hsv2rgb(vec3(baseHue, baseSat, baseVal));\n\n    // Animated caustic shimmer (pool floor)\n    float caustic = 0.0;\n    vec2 uv = gl_FragCoord.xy * 0.01;\n    caustic += 0.25 * sin(uv.x * 8.0 + uTime * 0.7);\n    caustic += 0.25 * sin(uv.y * 8.0 - uTime * 0.8);\n    caustic += 0.25 * sin((uv.x + uv.y) * 6.0 + uTime * 1.2);\n    caustic += 0.25 * sin((uv.x - uv.y) * 6.0 - uTime * 1.5);\n    caustic = 0.5 + 0.5 * caustic;\n\n    // Raytracing from stationary light source (fixed normal)\n    // --- Perspective Correction ---\n    // Use canvas size to compute aspect ratio and perspective depth\n    float aspect = 800.0 / 600.0; // Replace with uniform if dynamic\n    float fov = 1.2; // Field of view (radians), tweak for effect\n    float zNear = 0.5;\n    float zFar = 2.5;\n    // Map gl_FragCoord.xy to NDC [-1,1]\n    vec2 fragNDC = (gl_FragCoord.xy / vec2(800.0, 600.0)) * 2.0 - 1.0;\n    fragNDC.x *= aspect;\n    // Project to view space (simple perspective)\n    float z = zNear + (zFar - zNear) * 0.5; // Place surface at mid-depth\n    float px = fragNDC.x * tan(fov * 0.5) * z;\n    float py = fragNDC.y * tan(fov * 0.5) * z / aspect;\n    vec3 fragPos = vec3(px, py, 0.0);\n    vec3 normal = vec3(0.0, 0.0, 1.0); // Fixed normal (up)\n    vec3 lightDir = normalize(lightPos - fragPos);\n    float diff = max(dot(normal, lightDir), 0.0);\n    float spec = pow(max(dot(reflect(-lightDir, normal), vec3(0,0,1)), 0.0), 32.0);\n    float dist = length(lightPos - fragPos);\n    float attenuation = 1.0 / (0.5 + dist * dist);\n\n    // Modulate caustics by lighting (diffuse and attenuation)\n    float causticMod = caustic * diff * attenuation;\n    color *= 0.8 + 0.3 * causticMod; // brighten with shimmer modulated by light\n\n    color *= 0.7 + 0.5 * diff * attenuation;\n    color += vec3(1.0, 0.95, 0.8) * spec * attenuation * 0.5;\n\n    // Foam/sparkle at high crests\n    float foam = smoothstep(0.7, 0.95, abs(amp));\n    float sparkle = step(0.95, fract(sin(dot(gl_PointCoord, vec2(12.9898,78.233))) * 43758.5453));\n    foam *= 0.7 + 0.3 * sparkle;\n    color = mix(color, vec3(1.0), foam);\n\n    // Subtle ripples\n    float ripple = sin(10.0 * gl_PointCoord.x) * sin(10.0 * gl_PointCoord.y) * 0.05;\n    color += ripple;\n\n    // Soft circular blur\n    float dist2 = distance(gl_PointCoord, vec2(0.5, 0.5));\n    float blur = exp(-16.0 * dist2 * dist2);\n    float alpha = blur * 0.9;\n\n    // Further soften the color for a cohesive look\n    color = mix(vec3(0.1, 0.2, 0.4), color, blur * 1.2);\n\n    gl_FragColor = vec4(color, alpha);\n}";
+var fragSrc = "\nprecision mediump float;\nvarying float vAmp;\nuniform float uTime;\nconst vec3 lightPos = vec3(0.0, 0.0, 1.5);\nvec3 hsv2rgb(vec3 c) {\n    vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);\n    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\nvoid main() {\n    float amp = clamp(vAmp, -1.0, 1.0);\n    // Depth-based color: troughs are deeper/greener, crests are lighter/bluer\n    float baseHue = mix(0.5, 0.6, 0.5 + 0.5 * amp); // 0.5=greenish, 0.6=blueish\n    float baseSat = mix(0.8, 1.0, 0.5 + 0.5 * amp); // more saturated at crests\n    float baseVal = 0.4 + 0.6 * abs(amp); // brightness based on amplitude\n    vec3 color = hsv2rgb(vec3(baseHue, baseSat, baseVal));\n\n    // Animated caustic shimmer (pool floor)\n    float caustic = 0.0;\n    vec2 uv = gl_FragCoord.xy * float(".concat(CONFIG.SHADER_UV_SCALE, ");\n    caustic += float(").concat(CONFIG.SHADER_CAUSTIC_AMP, ") * sin(uv.x * float(").concat(CONFIG.SHADER_CAUSTIC_FREQ1, ") + uTime * float(").concat(CONFIG.SHADER_CAUSTIC_TIME1, "));\n    caustic += float(").concat(CONFIG.SHADER_CAUSTIC_AMP, ") * sin(uv.y * float(").concat(CONFIG.SHADER_CAUSTIC_FREQ2, ") + uTime * float(").concat(CONFIG.SHADER_CAUSTIC_TIME2, "));\n    caustic += float(").concat(CONFIG.SHADER_CAUSTIC_AMP, ") * sin((uv.x + uv.y) * float(").concat(CONFIG.SHADER_CAUSTIC_FREQ3, ") + uTime * float(").concat(CONFIG.SHADER_CAUSTIC_TIME3, "));\n    caustic += float(").concat(CONFIG.SHADER_CAUSTIC_AMP, ") * sin((uv.x - uv.y) * float(").concat(CONFIG.SHADER_CAUSTIC_FREQ4, ") + uTime * float(").concat(CONFIG.SHADER_CAUSTIC_TIME4, "));\n    caustic = 0.5 + 0.5 * caustic;\n\n    // Raytracing from stationary light source (fixed normal)\n    // --- Perspective Correction ---\n    // Use canvas size to compute aspect ratio and perspective depth\n    float aspect = float(").concat(CONFIG.SHADER_ASPECT, ");\n    float fov = float(").concat(CONFIG.SHADER_FOV, ");\n    float zNear = float(").concat(CONFIG.SHADER_Z_NEAR, ");\n    float zFar = float(").concat(CONFIG.SHADER_Z_FAR, ");\n    // Map gl_FragCoord.xy to NDC [-1,1]\n    vec2 fragNDC = (gl_FragCoord.xy / vec2(800.0, 600.0)) * 2.0 - 1.0;\n    fragNDC.x *= aspect;\n    // Project to view space (simple perspective)\n    float z = zNear + (zFar - zNear) * 0.5; // Place surface at mid-depth\n    float px = fragNDC.x * tan(fov * 0.5) * z;\n    float py = fragNDC.y * tan(fov * 0.5) * z / aspect;\n    vec3 fragPos = vec3(px, py, 0.0);\n    vec3 normal = vec3(0.0, 0.0, 1.0); // Fixed normal (up)\n    vec3 lightDir = normalize(lightPos - fragPos);\n    float diff = max(dot(normal, lightDir), 0.0);\n    float spec = pow(max(dot(reflect(-lightDir, normal), vec3(0,0,1)), 0.0), 32.0);\n    float dist = length(lightPos - fragPos);\n    float attenuation = 1.0 / (0.5 + dist * dist);\n\n    // Modulate caustics by lighting (diffuse and attenuation)\n    float causticMod = caustic * diff * attenuation;\n    color *= 0.8 + 0.3 * causticMod; // brighten with shimmer modulated by light\n\n    color *= 0.7 + 0.5 * diff * attenuation;\n    color += vec3(1.0, 0.95, 0.8) * spec * attenuation * 0.5;\n\n    // Foam/sparkle at high crests\n    float foam = smoothstep(0.7, 0.95, abs(amp));\n    float sparkle = step(0.95, fract(sin(dot(gl_PointCoord, vec2(12.9898,78.233))) * 43758.5453));\n    foam *= 0.7 + 0.3 * sparkle;\n    color = mix(color, vec3(1.0), foam);\n\n    // Subtle ripples\n    float ripple = sin(10.0 * gl_PointCoord.x) * sin(10.0 * gl_PointCoord.y) * 0.05;\n    color += ripple;\n\n    // Soft circular blur\n    float dist2 = distance(gl_PointCoord, vec2(0.5, 0.5));\n    float blur = exp(-float(").concat(CONFIG.SHADER_BLUR_EXP, ") * dist2 * dist2);\n    float alpha = blur * float(").concat(CONFIG.SHADER_BLUR_ALPHA, ");\n\n    // Further soften the color for a cohesive look\n    color = mix(vec3(0.1, 0.2, 0.4), color, blur * float(").concat(CONFIG.SHADER_COLOR_MIX, "));\n\n    gl_FragColor = vec4(color, alpha);\n}");
 // === Simulation Orchestrator ===
 var Simulation = /** @class */ (function () {
     function Simulation(canvasId) {
@@ -408,40 +468,42 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-    // --- Portfolio UI ---
-    var aboutHTML = "\n    <div class='animate__animated animate__fadeIn'>\n      <h2 class='h5 mb-3'><i class='fa-solid fa-user me-2'></i>About Me</h2>\n      <p class='mb-2'>Hi, I'm <b>Jun</b> \u2013 a creative developer passionate about interactive graphics, simulations, and modern web technologies.</p>\n      <ul class='list-unstyled small mb-0'>\n        <li><b>Location:</b> [Your City, Country]</li>\n        <li><b>Specialties:</b> WebGL, TypeScript, UI/UX, Creative Coding</li>\n      </ul>\n    </div>";
-    var projectDetails = [
-        {
-            title: 'WebGL Water Simulation',
-            tech: 'TypeScript, WebGL, OOP',
-            description: 'Real-time interactive water simulation with caustics, foam, and raytraced lighting.',
-            github: 'https://github.com/yourusername/webgl-water-sim',
-            details: "<h2 class='h5 mb-3'><i class='fa-solid fa-water me-2'></i>WebGL Water Simulation</h2><p>This project demonstrates a physically-based, interactive water simulation using WebGL and TypeScript. Features include caustics, foam, and raytraced lighting for realistic effects. <br><br><b>Technologies:</b> TypeScript, WebGL, GLSL, OOP<br><b>Highlights:</b> Real-time performance, modular code, advanced shaders.</p>"
-        },
-        {
-            title: 'Project 2: [Title]',
-            tech: '[Tech Stack]',
-            description: 'Short description of project 2.',
-            github: 'https://github.com/yourusername/project2',
-            details: "<h2 class='h5 mb-3'><i class='fa-solid fa-cube me-2'></i>Project 2</h2><p>Detailed description of project 2. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>"
-        },
-        {
-            title: 'Project 3: [Title]',
-            tech: '[Tech Stack]',
-            description: 'Short description of project 3.',
-            github: 'https://github.com/yourusername/project3',
-            details: "<h2 class='h5 mb-3'><i class='fa-solid fa-rocket me-2'></i>Project 3</h2><p>Detailed description of project 3. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>"
-        }
-    ];
-    var projectsHTML = "\n    <div class='animate__animated animate__fadeIn'>\n      <h2 class='h5 mb-3'><i class='fa-solid fa-code me-2'></i>Projects</h2>\n      <div class=\"swiper\" id=\"projectsSwiper\">\n        <div class=\"swiper-wrapper\">\n          ".concat(projectDetails.map(function (proj, i) { return "\n            <div class=\"swiper-slide\">\n              <div class=\"card bg-dark text-white border-0 project-card\" data-project-index=\"".concat(i, "\">\n                <div class=\"card-body d-flex flex-column h-100\">\n                  <h5 class=\"card-title mb-1\">").concat(proj.title, "</h5>\n                  <p class=\"card-text small mb-1\">").concat(proj.tech, "</p>\n                  <p class=\"card-text small mb-2\">").concat(proj.description, "</p>\n                  <a href=\"").concat(proj.github, "\" class=\"btn btn-sm minimal-nav-btn mt-auto align-self-start\" target=\"_blank\" rel=\"noopener\" title=\"View on GitHub\"><i class=\"fab fa-github me-1\"></i>GitHub</a>\n                </div>\n              </div>\n            </div>\n          "); }).join(''), "\n        </div>\n        <div class=\"swiper-pagination\"></div>\n      </div>\n    </div>");
-    var contactHTML = "\n    <div class='animate__animated animate__fadeIn'>\n      <h2 class='h5 mb-3'><i class='fa-solid fa-envelope me-2'></i>Contact</h2>\n      <div class='d-flex gap-3'>\n        <a href='mailto:jun@dodel.xyz' class='btn minimal-nav-btn' title='Email'><i class='fa-solid fa-envelope'></i></a>\n        <a href='https://github.com/MauJunSensei' target='_blank' class='btn minimal-nav-btn' title='GitHub'><i class='fab fa-github'></i></a>\n        <a href='https://www.linkedin.com/in/jun-d-336494329/' target='_blank' class='btn minimal-nav-btn' title='LinkedIn'><i class='fab fa-linkedin'></i></a>\n      </div>\n    </div>";
+    // --- Animated height transition for main-content-box ---
+    var animateHeight = function (box, updateContent) {
+        var startHeight = box.offsetHeight;
+        updateContent();
+        // Wait for DOM update
+        requestAnimationFrame(function () {
+            var endHeight = box.offsetHeight;
+            box.style.height = startHeight + 'px';
+            // Force reflow
+            void box.offsetWidth;
+            box.style.transition = 'height 0.4s cubic-bezier(.4,1.6,.6,1)';
+            box.style.height = endHeight + 'px';
+            var clear = function () {
+                box.style.transition = '';
+                box.style.height = '';
+                box.removeEventListener('transitionend', clear);
+            };
+            box.addEventListener('transitionend', clear);
+        });
+    };
     // --- Content switching logic ---
     var setContent = function (html) {
         var cont = document.getElementById('portfolioContent');
+        var box = cont === null || cont === void 0 ? void 0 : cont.closest('.main-content-box');
         if (!cont)
             return;
-        cont.classList.remove('animate__fadeIn');
-        cont.innerHTML = html;
+        if (box) {
+            animateHeight(box, function () {
+                cont.classList.remove('animate__fadeIn');
+                cont.innerHTML = html;
+            });
+        }
+        else {
+            cont.classList.remove('animate__fadeIn');
+            cont.innerHTML = html;
+        }
         // Initialize Swiper carousel if present
         setTimeout(function () {
             var swiperEl = document.getElementById('projectsSwiper');
@@ -456,10 +518,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         clickable: true,
                         dynamicBullets: true,
                     },
-                    speed: 500,
-                    spaceBetween: 24,
+                    speed: CONFIG.SWIPER_SPEED,
+                    spaceBetween: CONFIG.SWIPER_SPACE_BETWEEN,
                     autoplay: {
-                        delay: 2000,
+                        delay: CONFIG.SWIPER_AUTOPLAY_DELAY,
                         disableOnInteraction: false,
                     },
                 });
@@ -474,7 +536,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     var idx = this.getAttribute('data-project-index');
                     if (idx !== null) {
                         var proj = projectDetails[+idx];
-                        setContent("<div class='animate__animated animate__fadeIn'>".concat(proj.details, "<br><button class='btn minimal-nav-btn mt-3 me-2' id='backToProjects'><i class='fa fa-arrow-left me-1'></i>Back</button><a href='").concat(proj.github, "' class='btn minimal-nav-btn mt-3' target='_blank' rel='noopener'><i class='fab fa-github me-1'></i>GitHub</a></div>"));
+                        setContent("\n              <div class='animate__animated animate__fadeIn'>\n                ".concat(proj.details, "\n                <div class=\"project-details-actions\" style=\"display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 2.2rem; gap: 0.5rem;\">\n                  <button class='btn minimal-nav-btn mt-3 me-2' id='backToProjects'><i class='fa fa-arrow-left me-1'></i>Back</button>\n                  <a href='").concat(proj.github, "' class='btn minimal-nav-btn mt-3' target='_blank' rel='noopener'><i class='fab fa-github me-1'></i>GitHub</a>\n                </div>\n              </div>\n            "));
                         setTimeout(function () {
                             var backBtn = document.getElementById('backToProjects');
                             if (backBtn)
@@ -522,13 +584,14 @@ document.addEventListener('DOMContentLoaded', function () {
     addDisableRandomWavesToggle();
     // --- Initial load ---
     setContent(aboutHTML);
-    // --- Ensure overlay container does not block pointer events except for interactive elements
+    // --- Remove pointer-events: none from container to restore interactivity ---
+    // (If you want to allow canvas clicks through the overlay, use a separate absolutely positioned div for pointer-events: none, not the main container.)
+    // If you previously set pointer-events: none on the container, undo it:
     var container = document.querySelector('.container');
     if (container) {
-        container.style.pointerEvents = 'none';
-        // Restore pointer events for nav, buttons, and links
+        container.style.pointerEvents = '';
         container.querySelectorAll('button, a, nav, .minimal-nav-btn').forEach(function (el) {
-            el.style.pointerEvents = 'auto';
+            el.style.pointerEvents = '';
         });
     }
 });

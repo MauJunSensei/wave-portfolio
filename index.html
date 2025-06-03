@@ -13,21 +13,23 @@
 <body>
   <canvas id="rippleCanvas"></canvas>
   <main class="container d-flex flex-column align-items-center justify-content-center" style="z-index:2; min-height:100vh; position:relative;">
-    <h1 class="fw-bold text-center mb-4 animate__animated animate__fadeInDown" style="font-size:2.2rem; letter-spacing:0.01em;">
-      Jun <span class="text-info">Portfolio</span>
-    </h1>
-    <nav class="d-flex gap-3 mb-4" aria-label="Main navigation">
-      <button type="button" class="btn btn-outline-info px-4 py-2 minimal-nav-btn animate__animated animate__fadeInUp" id="aboutBtn">
-        <i class="fa-solid fa-user"></i> About
-      </button>
-      <button type="button" class="btn btn-outline-info px-4 py-2 minimal-nav-btn animate__animated animate__fadeInUp" id="projectsBtn">
-        <i class="fa-solid fa-code"></i> Projects
-      </button>
-      <button type="button" class="btn btn-outline-info px-4 py-2 minimal-nav-btn animate__animated animate__fadeInUp" id="contactBtn">
-        <i class="fa-solid fa-envelope"></i> Contact
-      </button>
-    </nav>
-    <section id="portfolioContent" class="w-100" style="max-width:420px;"></section>
+    <div class="main-content-box">
+      <h1 class="fw-bold text-center mb-4 animate__animated animate__fadeInDown" style="font-size:2.2rem; letter-spacing:0.01em;">
+        Jun <span class="text-info">Dodel</span>
+      </h1>
+      <nav class="d-flex gap-3 mb-4" aria-label="Main navigation">
+        <button type="button" class="btn btn-outline-info px-4 py-2 minimal-nav-btn animate__animated animate__fadeInUp" id="aboutBtn">
+          <i class="fa-solid fa-user"></i> About
+        </button>
+        <button type="button" class="btn btn-outline-info px-4 py-2 minimal-nav-btn animate__animated animate__fadeInUp" id="projectsBtn">
+          <i class="fa-solid fa-code"></i> Projects
+        </button>
+        <button type="button" class="btn btn-outline-info px-4 py-2 minimal-nav-btn animate__animated animate__fadeInUp" id="contactBtn">
+          <i class="fa-solid fa-envelope"></i> Contact
+        </button>
+      </nav>
+      <section id="portfolioContent" class="w-100" style="max-width:420px;"></section>
+    </div>
   </main>
   <script src="wave.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

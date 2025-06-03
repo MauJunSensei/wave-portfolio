@@ -10,6 +10,39 @@ interface Config {
     RANDOM_WAVE_INTERVAL_MIN: number;
     RANDOM_WAVE_INTERVAL_MAX: number;
     DISTURBANCE_RADIUS: number;
+    CARD_MIN_WIDTH: number;
+    CARD_MAX_WIDTH: number;
+    CARD_MIN_HEIGHT: number;
+    CARD_MAX_HEIGHT: number;
+    CARD_BORDER_RADIUS: number;
+    CARD_BODY_PADDING: string;
+    CARD_MARGIN_Y: string;
+    CARD_TITLE_FONT_SIZE: string;
+    CARD_TITLE_MARGIN_BOTTOM: string;
+    CARD_TEXT_FONT_SIZE: string;
+    CARD_TEXT_MARGIN_BOTTOM: string;
+    PROJECT_DETAILS_ACTIONS_MARGIN_TOP: string;
+    // Add shader/animation and Swiper config values
+    SHADER_ASPECT: number;
+    SHADER_FOV: number;
+    SHADER_Z_NEAR: number;
+    SHADER_Z_FAR: number;
+    SHADER_UV_SCALE: number;
+    SHADER_CAUSTIC_FREQ1: number;
+    SHADER_CAUSTIC_FREQ2: number;
+    SHADER_CAUSTIC_FREQ3: number;
+    SHADER_CAUSTIC_FREQ4: number;
+    SHADER_CAUSTIC_AMP: number;
+    SHADER_CAUSTIC_TIME1: number;
+    SHADER_CAUSTIC_TIME2: number;
+    SHADER_CAUSTIC_TIME3: number;
+    SHADER_CAUSTIC_TIME4: number;
+    SHADER_BLUR_EXP: number;
+    SHADER_BLUR_ALPHA: number;
+    SHADER_COLOR_MIX: number;
+    SWIPER_SPEED: number;
+    SWIPER_SPACE_BETWEEN: number;
+    SWIPER_AUTOPLAY_DELAY: number;
 }
 
 const CONFIG: Config = {
@@ -21,6 +54,39 @@ const CONFIG: Config = {
     RANDOM_WAVE_INTERVAL_MIN: 300, // ms
     RANDOM_WAVE_INTERVAL_MAX: 2000, // ms
     DISTURBANCE_RADIUS: 3,
+    CARD_MIN_WIDTH: 260,
+    CARD_MAX_WIDTH: 340,
+    CARD_MIN_HEIGHT: 180,
+    CARD_MAX_HEIGHT: 240,
+    CARD_BORDER_RADIUS: 18,
+    CARD_BODY_PADDING: '1.6rem 1.3rem 1.5rem 1.3rem',
+    CARD_MARGIN_Y: '0.5rem',
+    CARD_TITLE_FONT_SIZE: '1.18rem',
+    CARD_TITLE_MARGIN_BOTTOM: '0.5em',
+    CARD_TEXT_FONT_SIZE: '1.01rem',
+    CARD_TEXT_MARGIN_BOTTOM: '0.5em',
+    PROJECT_DETAILS_ACTIONS_MARGIN_TOP: '2.2rem',
+    // Shader and animation config
+    SHADER_ASPECT: 800 / 600,
+    SHADER_FOV: 1.2,
+    SHADER_Z_NEAR: 0.5,
+    SHADER_Z_FAR: 2.5,
+    SHADER_UV_SCALE: 0.01,
+    SHADER_CAUSTIC_FREQ1: 8.0,
+    SHADER_CAUSTIC_FREQ2: 8.0,
+    SHADER_CAUSTIC_FREQ3: 6.0,
+    SHADER_CAUSTIC_FREQ4: 6.0,
+    SHADER_CAUSTIC_AMP: 0.25,
+    SHADER_CAUSTIC_TIME1: 0.7,
+    SHADER_CAUSTIC_TIME2: -0.8,
+    SHADER_CAUSTIC_TIME3: 1.2,
+    SHADER_CAUSTIC_TIME4: -1.5,
+    SHADER_BLUR_EXP: 16.0,
+    SHADER_BLUR_ALPHA: 0.9,
+    SHADER_COLOR_MIX: 1.2,
+    SWIPER_SPEED: 500,
+    SWIPER_SPACE_BETWEEN: 24,
+    SWIPER_AUTOPLAY_DELAY: 2000,
 };
 
 // --- Portfolio UI ---
@@ -39,7 +105,7 @@ const projectDetails = [
     title: 'WebGL Water Simulation',
     tech: 'TypeScript, WebGL',
     description: 'Real-time interactive water simulation with caustics, foam, and raytraced lighting.',
-    github: 'https://github.com/yourusername/webgl-water-sim',
+    github: 'https://github.com/MauJunSensei/wave-portfolio/',
     details: `<h2 class='h5 mb-3'><i class='fa-solid fa-water me-2'></i>WebGL Water Simulation</h2><p>This project demonstrates a physically-based, interactive water simulation using WebGL and TypeScript. Features include caustics, foam, and raytraced lighting for realistic effects. <br><br><b>Technologies:</b> TypeScript, WebGL<br><b>Highlights:</b> Real-time performance, advanced shaders, physics simulation</p>`
   },
   {
@@ -64,11 +130,16 @@ const projectsHTML = `
       <div class="swiper-wrapper">
         ${projectDetails.map((proj, i) => `
           <div class="swiper-slide">
-            <div class="card bg-dark text-white border-0 project-card" data-project-index="${i}">
-              <div class="card-body d-flex flex-column h-100">
-                <h5 class="card-title mb-1">${proj.title}</h5>
-                <p class="card-text small mb-1">${proj.tech}</p>
-                <p class="card-text small mb-2">${proj.description}</p>
+            <div class="card bg-dark text-white border-0 project-card" data-project-index="${i}" style="
+              min-width: ${CONFIG.CARD_MIN_WIDTH}px; max-width: ${CONFIG.CARD_MAX_WIDTH}px;
+              min-height: ${CONFIG.CARD_MIN_HEIGHT}px; max-height: ${CONFIG.CARD_MAX_HEIGHT}px;
+              border-radius: ${CONFIG.CARD_BORDER_RADIUS}px;
+              margin-top: ${CONFIG.CARD_MARGIN_Y}; margin-bottom: ${CONFIG.CARD_MARGIN_Y};
+            ">
+              <div class="card-body d-flex flex-column h-100" style="padding: ${CONFIG.CARD_BODY_PADDING};">
+                <h5 class="card-title mb-1" style="font-size: ${CONFIG.CARD_TITLE_FONT_SIZE}; margin-bottom: ${CONFIG.CARD_TITLE_MARGIN_BOTTOM};">${proj.title}</h5>
+                <p class="card-text small mb-1" style="font-size: ${CONFIG.CARD_TEXT_FONT_SIZE}; margin-bottom: ${CONFIG.CARD_TEXT_MARGIN_BOTTOM};">${proj.tech}</p>
+                <p class="card-text small mb-2" style="font-size: ${CONFIG.CARD_TEXT_FONT_SIZE}; margin-bottom: ${CONFIG.CARD_TEXT_MARGIN_BOTTOM};">${proj.description}</p>
                 <a href="${proj.github}" class="btn btn-sm minimal-nav-btn mt-auto align-self-start" target="_blank" rel="noopener" title="View on GitHub"><i class="fab fa-github me-1"></i>GitHub</a>
               </div>
             </div>
@@ -419,16 +490,12 @@ const fragSrc = `
 precision mediump float;
 varying float vAmp;
 uniform float uTime;
-
-// Light source position in NDC (centered, above pool)
-const vec3 lightPos = vec3(0.0, 0.0, 1.5); // x, y in NDC, z above pool
-
+const vec3 lightPos = vec3(0.0, 0.0, 1.5);
 vec3 hsv2rgb(vec3 c) {
     vec4 K = vec4(1.0, 2.0/3.0, 1.0/3.0, 3.0);
     vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
-
 void main() {
     float amp = clamp(vAmp, -1.0, 1.0);
     // Depth-based color: troughs are deeper/greener, crests are lighter/bluer
@@ -439,20 +506,20 @@ void main() {
 
     // Animated caustic shimmer (pool floor)
     float caustic = 0.0;
-    vec2 uv = gl_FragCoord.xy * 0.01;
-    caustic += 0.25 * sin(uv.x * 8.0 + uTime * 0.7);
-    caustic += 0.25 * sin(uv.y * 8.0 - uTime * 0.8);
-    caustic += 0.25 * sin((uv.x + uv.y) * 6.0 + uTime * 1.2);
-    caustic += 0.25 * sin((uv.x - uv.y) * 6.0 - uTime * 1.5);
+    vec2 uv = gl_FragCoord.xy * float(${CONFIG.SHADER_UV_SCALE});
+    caustic += float(${CONFIG.SHADER_CAUSTIC_AMP}) * sin(uv.x * float(${CONFIG.SHADER_CAUSTIC_FREQ1}) + uTime * float(${CONFIG.SHADER_CAUSTIC_TIME1}));
+    caustic += float(${CONFIG.SHADER_CAUSTIC_AMP}) * sin(uv.y * float(${CONFIG.SHADER_CAUSTIC_FREQ2}) + uTime * float(${CONFIG.SHADER_CAUSTIC_TIME2}));
+    caustic += float(${CONFIG.SHADER_CAUSTIC_AMP}) * sin((uv.x + uv.y) * float(${CONFIG.SHADER_CAUSTIC_FREQ3}) + uTime * float(${CONFIG.SHADER_CAUSTIC_TIME3}));
+    caustic += float(${CONFIG.SHADER_CAUSTIC_AMP}) * sin((uv.x - uv.y) * float(${CONFIG.SHADER_CAUSTIC_FREQ4}) + uTime * float(${CONFIG.SHADER_CAUSTIC_TIME4}));
     caustic = 0.5 + 0.5 * caustic;
 
     // Raytracing from stationary light source (fixed normal)
     // --- Perspective Correction ---
     // Use canvas size to compute aspect ratio and perspective depth
-    float aspect = 800.0 / 600.0; // Replace with uniform if dynamic
-    float fov = 1.2; // Field of view (radians), tweak for effect
-    float zNear = 0.5;
-    float zFar = 2.5;
+    float aspect = float(${CONFIG.SHADER_ASPECT});
+    float fov = float(${CONFIG.SHADER_FOV});
+    float zNear = float(${CONFIG.SHADER_Z_NEAR});
+    float zFar = float(${CONFIG.SHADER_Z_FAR});
     // Map gl_FragCoord.xy to NDC [-1,1]
     vec2 fragNDC = (gl_FragCoord.xy / vec2(800.0, 600.0)) * 2.0 - 1.0;
     fragNDC.x *= aspect;
@@ -487,11 +554,11 @@ void main() {
 
     // Soft circular blur
     float dist2 = distance(gl_PointCoord, vec2(0.5, 0.5));
-    float blur = exp(-16.0 * dist2 * dist2);
-    float alpha = blur * 0.9;
+    float blur = exp(-float(${CONFIG.SHADER_BLUR_EXP}) * dist2 * dist2);
+    float alpha = blur * float(${CONFIG.SHADER_BLUR_ALPHA});
 
     // Further soften the color for a cohesive look
-    color = mix(vec3(0.1, 0.2, 0.4), color, blur * 1.2);
+    color = mix(vec3(0.1, 0.2, 0.4), color, blur * float(${CONFIG.SHADER_COLOR_MIX}));
 
     gl_FragColor = vec4(color, alpha);
 }`;
@@ -596,12 +663,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // --- Animated height transition for main-content-box ---
+  const animateHeight = (box: HTMLElement, updateContent: () => void) => {
+    const startHeight = box.offsetHeight;
+    updateContent();
+    // Wait for DOM update
+    requestAnimationFrame(() => {
+      const endHeight = box.offsetHeight;
+      box.style.height = startHeight + 'px';
+      // Force reflow
+      void box.offsetWidth;
+      box.style.transition = 'height 0.4s cubic-bezier(.4,1.6,.6,1)';
+      box.style.height = endHeight + 'px';
+      const clear = () => {
+        box.style.transition = '';
+        box.style.height = '';
+        box.removeEventListener('transitionend', clear);
+      };
+      box.addEventListener('transitionend', clear);
+    });
+  };
+
   // --- Content switching logic ---
   const setContent = (html: string): void => {
     const cont = document.getElementById('portfolioContent');
+    const box = cont?.closest('.main-content-box') as HTMLElement;
     if (!cont) return;
-    cont.classList.remove('animate__fadeIn');
-    cont.innerHTML = html;
+    if (box) {
+      animateHeight(box, () => {
+        cont.classList.remove('animate__fadeIn');
+        cont.innerHTML = html;
+      });
+    } else {
+      cont.classList.remove('animate__fadeIn');
+      cont.innerHTML = html;
+    }
     // Initialize Swiper carousel if present
     setTimeout(() => {
       const swiperEl = document.getElementById('projectsSwiper');
@@ -616,10 +712,10 @@ document.addEventListener('DOMContentLoaded', () => {
             clickable: true,
             dynamicBullets: true,
           },
-          speed: 500,
-          spaceBetween: 24,
+          speed: CONFIG.SWIPER_SPEED,
+          spaceBetween: CONFIG.SWIPER_SPACE_BETWEEN,
           autoplay: {
-            delay: 2000,
+            delay: CONFIG.SWIPER_AUTOPLAY_DELAY,
             disableOnInteraction: false,
           },
         });
@@ -633,7 +729,15 @@ document.addEventListener('DOMContentLoaded', () => {
           const idx = this.getAttribute('data-project-index');
           if (idx !== null) {
             const proj = projectDetails[+idx];
-            setContent(`<div class='animate__animated animate__fadeIn'>${proj.details}<br><button class='btn minimal-nav-btn mt-3 me-2' id='backToProjects'><i class='fa fa-arrow-left me-1'></i>Back</button><a href='${proj.github}' class='btn minimal-nav-btn mt-3' target='_blank' rel='noopener'><i class='fab fa-github me-1'></i>GitHub</a></div>`);
+            setContent(`
+              <div class='animate__animated animate__fadeIn'>
+                ${proj.details}
+                <div class="project-details-actions" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 2.2rem; gap: 0.5rem;">
+                  <button class='btn minimal-nav-btn mt-3 me-2' id='backToProjects'><i class='fa fa-arrow-left me-1'></i>Back</button>
+                  <a href='${proj.github}' class='btn minimal-nav-btn mt-3' target='_blank' rel='noopener'><i class='fab fa-github me-1'></i>GitHub</a>
+                </div>
+              </div>
+            `);
             setTimeout(() => {
               const backBtn = document.getElementById('backToProjects');
               if (backBtn) backBtn.addEventListener('click', () => setContent(projectsHTML));
@@ -683,13 +787,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Initial load ---
   setContent(aboutHTML);
 
-  // --- Ensure overlay container does not block pointer events except for interactive elements
+  // --- Remove pointer-events: none from container to restore interactivity ---
+  // (If you want to allow canvas clicks through the overlay, use a separate absolutely positioned div for pointer-events: none, not the main container.)
+  // If you previously set pointer-events: none on the container, undo it:
   const container = document.querySelector('.container');
   if (container) {
-    (container as HTMLElement).style.pointerEvents = 'none';
-    // Restore pointer events for nav, buttons, and links
+    (container as HTMLElement).style.pointerEvents = '';
     container.querySelectorAll('button, a, nav, .minimal-nav-btn').forEach(el => {
-      (el as HTMLElement).style.pointerEvents = 'auto';
+      (el as HTMLElement).style.pointerEvents = '';
     });
   }
 });
