@@ -104,18 +104,11 @@ var projectDetails = [
         details: "<h2 class='h5 mb-3'><i class='fa-solid fa-water me-2'></i>WebGL Water Simulation</h2><p>This project demonstrates a physically-based, interactive water simulation using WebGL and TypeScript. Features include caustics, foam, and raytraced lighting for realistic effects. <br><br><b>Technologies:</b> TypeScript, WebGL<br><b>Highlights:</b> Real-time performance, advanced shaders, physics simulation</p>"
     },
     {
-        title: 'Project 2: TBF',
-        tech: '[Tech Stack]',
-        description: 'Short description of project 2.',
-        github: 'https://github.com/yourusername/project2',
-        details: "<h2 class='h5 mb-3'><i class='fa-solid fa-cube me-2'></i>Project 2</h2><p>Detailed description of project 2. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>"
-    },
-    {
-        title: 'Project 3: TBF',
-        tech: '[Tech Stack]',
-        description: 'Short description of project 3.',
-        github: 'https://github.com/yourusername/project3',
-        details: "<h2 class='h5 mb-3'><i class='fa-solid fa-rocket me-2'></i>Project 3</h2><p>Detailed description of project 3. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>"
+        title: 'Neural-Network Visualizer',
+        tech: 'Rust, egui/eframe',
+        description: 'Cross-platform desktop app for real-time, interactive neural network visualization.',
+        github: 'https://github.com/MauJunSensei/nn-visualizer/tree/master',
+        details: "<h2 class='h5 mb-3'><i class='fa-solid fa-brain me-2'></i>Neural-Network Visualizer</h2>\n      <p>A cross-platform desktop application for real-time, interactive visualization of neural networks. Built with Rust (egui/eframe) for performance and modern UI.</p>\n      <ul>\n        <li>Real-time neural network architecture visualization</li>\n        <li>Interactive exploration of layers, nodes, and weights</li>\n        <li>Cross-platform: Windows, macOS, Linux</li>\n      </ul>\n      <b>Technologies:</b> Rust, egui/eframe<br>\n      <b>Highlights:</b> Modern UI, high performance, educational tool"
     }
 ];
 var projectsHTML = "\n  <div class='animate__animated animate__fadeIn'>\n    <h2 class='h5 mb-3'><i class='fa-solid fa-code me-2'></i>Projects</h2>\n    <div class=\"swiper\" id=\"projectsSwiper\">\n      <div class=\"swiper-wrapper\">\n        ".concat(projectDetails.map(function (proj, i) { return "\n          <div class=\"swiper-slide\">\n            <div class=\"card bg-dark text-white border-0 project-card\" data-project-index=\"".concat(i, "\" style=\"\n              min-width: ").concat(CONFIG.CARD_MIN_WIDTH, "px; max-width: ").concat(CONFIG.CARD_MAX_WIDTH, "px;\n              min-height: ").concat(CONFIG.CARD_MIN_HEIGHT, "px; max-height: ").concat(CONFIG.CARD_MAX_HEIGHT, "px;\n              border-radius: ").concat(CONFIG.CARD_BORDER_RADIUS, "px;\n              margin-top: ").concat(CONFIG.CARD_MARGIN_Y, "; margin-bottom: ").concat(CONFIG.CARD_MARGIN_Y, ";\n            \">\n              <div class=\"card-body d-flex flex-column h-100\" style=\"padding: ").concat(CONFIG.CARD_BODY_PADDING, ";\">\n                <h5 class=\"card-title mb-1\" style=\"font-size: ").concat(CONFIG.CARD_TITLE_FONT_SIZE, "; margin-bottom: ").concat(CONFIG.CARD_TITLE_MARGIN_BOTTOM, ";\">").concat(proj.title, "</h5>\n                <p class=\"card-text small mb-1\" style=\"font-size: ").concat(CONFIG.CARD_TEXT_FONT_SIZE, "; margin-bottom: ").concat(CONFIG.CARD_TEXT_MARGIN_BOTTOM, ";\">").concat(proj.tech, "</p>\n                <p class=\"card-text small mb-2\" style=\"font-size: ").concat(CONFIG.CARD_TEXT_FONT_SIZE, "; margin-bottom: ").concat(CONFIG.CARD_TEXT_MARGIN_BOTTOM, ";\">").concat(proj.description, "</p>\n                <a href=\"").concat(proj.github, "\" class=\"btn btn-sm minimal-nav-btn mt-auto align-self-start\" target=\"_blank\" rel=\"noopener\" title=\"View on GitHub\"><i class=\"fab fa-github me-1\"></i>GitHub</a>\n              </div>\n            </div>\n          </div>\n        "); }).join(''), "\n      </div>\n      <div class=\"swiper-pagination\"></div>\n    </div>\n  </div>");

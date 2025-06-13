@@ -166,18 +166,19 @@ const projectDetails = [
     details: `<h2 class='h5 mb-3'><i class='fa-solid fa-water me-2'></i>WebGL Water Simulation</h2><p>This project demonstrates a physically-based, interactive water simulation using WebGL and TypeScript. Features include caustics, foam, and raytraced lighting for realistic effects. <br><br><b>Technologies:</b> TypeScript, WebGL<br><b>Highlights:</b> Real-time performance, advanced shaders, physics simulation</p>`
   },
   {
-    title: 'Project 2: TBF',
-    tech: '[Tech Stack]',
-    description: 'Short description of project 2.',
-    github: 'https://github.com/yourusername/project2',
-    details: `<h2 class='h5 mb-3'><i class='fa-solid fa-cube me-2'></i>Project 2</h2><p>Detailed description of project 2. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>`
-  },
-  {
-    title: 'Project 3: TBF',
-    tech: '[Tech Stack]',
-    description: 'Short description of project 3.',
-    github: 'https://github.com/yourusername/project3',
-    details: `<h2 class='h5 mb-3'><i class='fa-solid fa-rocket me-2'></i>Project 3</h2><p>Detailed description of project 3. <br><br><b>Technologies:</b> [Tech Stack]<br><b>Highlights:</b> [Key features].</p>`
+    title: 'Neural-Network Visualizer',
+    tech: 'Rust, egui/eframe',
+    description: 'Cross-platform desktop app for real-time, interactive neural network visualization.',
+    github: 'https://github.com/MauJunSensei/nn-visualizer/tree/master',
+    details: `<h2 class='h5 mb-3'><i class='fa-solid fa-brain me-2'></i>Neural-Network Visualizer</h2>
+      <p>A cross-platform desktop application for real-time, interactive visualization of neural networks. Built with Rust (egui/eframe) for performance and modern UI.</p>
+      <ul>
+        <li>Real-time neural network architecture visualization</li>
+        <li>Interactive exploration of layers, nodes, and weights</li>
+        <li>Cross-platform: Windows, macOS, Linux</li>
+      </ul>
+      <b>Technologies:</b> Rust, egui/eframe<br>
+      <b>Highlights:</b> Modern UI, high performance, educational tool`
   }
 ];
 const projectsHTML = `
